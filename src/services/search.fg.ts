@@ -367,8 +367,11 @@ export function search(q?: string): void {
 
   // Update query
   if (q !== undefined) {
-    const isGlobal = q.startsWith('/')
-    if (isGlobal) q = q.slice(1).trimStart()
+    let isGlobal = Settings.state.searchAllPanelsDefault
+    if (q.startsWith('/')) {
+      isGlobal = !isGlobal
+      q = q.slice(1).trimStart()
+    }
 
     if (q.length < MIN_SEARCH_QUERY_LEN && !regexCJK.test(q)) q = ''
     if (query === q && reactive.allPanels === isGlobal) return
